@@ -1,10 +1,4 @@
-//============================================================================
-// Name        : lab3.cpp
-// Author      : 
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
+
 
 #include<sys/types.h>
 #include<string.h>
@@ -22,7 +16,7 @@ class Student {
 	string branch;
 	int sem;
 	string buffer;
-        int fdsize; //is used to keep track of the size of the record which will be modified
+        int fdsize;
 public :
 	void read()
 	{
