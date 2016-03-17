@@ -51,39 +51,40 @@ class Student{
 		void write()
 		{
 
-			fp1.open("file2.txt",ios::out|ios::app);
+			fp1.open("file3.txt",ios::out|ios::app);
 			fp1<<buf;
 			fp1.close();
 		}
-		int search()
+		int search(string key)
 		{
-
-			cout<<"enter the key"<<endl;
-			cin>>key;
-			fstream f1;
-			f1.open("file2.txt",ios::in);
+			//cout<<"enter the key"<<endl;
+			//cin>>key;
+			//fstream f1;
+			int pos;
+			fp1.open("file3.txt",ios::in);
 			while(!fp1.eof())
 			{
 				getline(fp1,buf);
+				pos=fp1.tellp();
 				unpack();
 
-				if(usn == key)
+				if(usn==key)
 				{
-					cout<<"record found";
-					pos=f1.tellp();
-					return pos;
+					cout<<name<<endl;
+								cout<<usn <<endl;
+								cout<<branch<<endl;
+								cout<<semester<<endl;
 				}
 				else
-				{
-					cout<<"record not found";
-
-				}
+					cout<<"record not found"<<endl;
 				fp1.close();
-				return -1;
-				}
-			}
 
-		string unpack()
+				return 0;
+
+			}
+		}
+
+		void unpack()
 		{
 			int i=0;
 			name.erase();
@@ -107,18 +108,67 @@ class Student{
 			while(buf[i]!='$')
 
 							semester+=buf[i++];
-							i++;
 
-			cout<<name<<endl;
-			cout<<usn <<endl;
-			cout<<branch<<endl;
-			cout<<semester<<endl;
 
 
 		}
-		int modify(key,string filename)
+		void modify()
 		{
-			cout<<"1.insert"<<"2.search"<<"3.modify";
+
+			int ch,pos;
+			pos=search(key);
+			cout<<"enter ur choice"<<endl;
+			cout<<"1.NAME"<<endl<<"2.usn"<<endl<<"3.branch"<<endl<<"4.semester";
+			cin>>ch;
+			switch(ch)
+			{
+			case 1:cout<<"enter the name"<<endl;
+					cin.clear();
+					cin.ignore(255,'\n');
+					getline(cin,name);
+					break;
+			case 2: cout<<"enter the usn"<<endl;
+					cin>>usn;
+					break;
+			case 3: cout<<"enter the branch"<<endl;
+					cin>>branch;
+					break;
+			case 4: cout<<"enter the semester"<<endl;
+					cin>>semester;
+					break;
+			}
+			pack();
+			write();
+
+
 
 
 		}
+};
+int main()
+{
+	int ch;
+	string key;
+	Student s;
+	while(1)
+	{
+	cout<<"enter ur choice"<<endl;
+	cout<<"1.insert"<<"2.search"<<"3.modify"<<endl;
+	cin>>ch;
+	switch(ch)
+	{
+		case 1: s.read();
+				s.pack();
+				s.write();
+				break;
+		case 2:
+			cout<<"key\n";
+			cin>>key;
+			s.search(key);
+				break;
+		case 3: s.modify();
+				break;
+	}
+	}
+	return 0;
+}
