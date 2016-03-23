@@ -1,6 +1,8 @@
+
+
 //============================================================================
 // Name        : lab2.cpp
-// Author      : 
+// Author      : Swetha V
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -28,11 +30,26 @@ class Student{
 		{
 			cin.clear();
 			cin.ignore(255,'\n');
-			cout<<"enter the name usn  branch semester";
+			cout<<"enter the name";
 			cout<<endl;
 			getline(cin,name);
+			//cin.clear();
+			//cin.ignore(255,'\n');
+			cout<<"enter the usn ";
 			cout<<endl;
-			cin>>usn>>branch>>semester;
+			getline(cin,usn);
+			//cin.clear();
+			//cin.ignore(255,'\n');
+			cout<<"enter the branch";
+			cout<<endl;
+			getline(cin,branch);
+			//cin.clear();
+			//cin.ignore(255,'\n');
+			cout<<"enter the semester";
+			cout<<endl;
+			getline(cin,semester);
+			cout<<endl;
+			//cin>>usn>>branch>>semester;
 			cout<<"insertion done the info's are"<<endl;
 			cout<<name<<endl<<usn<<endl<<branch<<endl<<semester<<endl;
 		}
@@ -44,8 +61,8 @@ class Student{
 			len=temp.size();
 			buf=temp;
 			for(i=len+1;i<100;i++)
-				buf+='$';
-				cout<<buf;
+			buf+='$';
+			cout<<buf<<endl;
 			return 0;
 		}
 		void write()
@@ -53,6 +70,7 @@ class Student{
 
 			fp1.open("file3.txt",ios::out|ios::app);
 			fp1<<buf;
+			fp1<<endl;
 			fp1.close();
 		}
 		int search(string key)
@@ -64,55 +82,54 @@ class Student{
 			fp1.open("file3.txt",ios::in);
 			while(!fp1.eof())
 			{
+				//pos=fp1.tellp();
 				getline(fp1,buf);
 				pos=fp1.tellp();
 				unpack();
-
 				if(usn==key)
 				{
+					cout<<"Found the record at "<<pos-101<<endl;
 					cout<<name<<endl;
-								cout<<usn <<endl;
-								cout<<branch<<endl;
-								cout<<semester<<endl;
+					cout<<usn <<endl;
+					cout<<branch<<endl;
+					cout<<semester<<endl;
+					fp1.close();
+					return pos;
 				}
-				else
-					cout<<"record not found"<<endl;
-				fp1.close();
-
-				return 0;
-
+				//cout<<"record not found"<<endl;
+				//fp1.close();
 			}
+			return 0;
+
 		}
 
 		void unpack()
 		{
+			//cout<<"Inside unpack func"<<endl;
 			int i=0;
+			usn.erase();
+			while(buf[i]!='|')
+				usn+=buf[i++];
+				i++;
+
 			name.erase();
 			while(buf[i]!='|')
 				name+=buf[i++];
 				i++;
 
-			usn.erase();
-			while(buf[i]!='|')
-
-				usn+=buf[i++];
-				i++;
-
 			branch.erase();
 			while(buf[i]!='|')
-
-							branch+=buf[i++];
-							i++;
+				branch+=buf[i++];
+				i++;
 
 			semester.erase();
 			while(buf[i]!='$')
-
-							semester+=buf[i++];
-
-
+				semester+=buf[i++];
+				i++;
+			
 
 		}
-		void modify()
+		void modify(string key)
 		{
 
 			int ch,pos;
@@ -131,18 +148,20 @@ class Student{
 					cin>>usn;
 					break;
 			case 3: cout<<"enter the branch"<<endl;
-					cin>>branch;
+					cin.clear();
+					cin.ignore(255,'\n');
+					getline(cin,branch);
 					break;
 			case 4: cout<<"enter the semester"<<endl;
 					cin>>semester;
 					break;
 			}
 			pack();
-			write();
-
-
-
-
+			//write();
+			 pos=pos-101;
+		 	 fp1.open("file3.txt");
+			 fp1.seekp(pos,ios::beg);
+		 	 fp1<<buf;
 		}
 };
 int main()
@@ -166,7 +185,10 @@ int main()
 			cin>>key;
 			s.search(key);
 				break;
-		case 3: s.modify();
+		case 3:
+				cout<<"key\n";
+				cin>>key;
+				s.modify(key);
 				break;
 	}
 	}
